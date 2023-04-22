@@ -5,6 +5,7 @@ import {
   gameButton,
   getPlayer,
   logEntry,
+  showInventory,
   updatePlayer,
 } from "./Game";
 
@@ -15,14 +16,19 @@ export function Town() {
   logEntry("You are currently in Town. What would you like to do?", "gold");
   gameButton("Travel", Forest);
   gameButton("Shop");
-  gameButton("Rest", () => {
-    const { hp_max, mp_max, ap_max } = getPlayer();
-    updatePlayer({ hp: hp_max, mp: mp_max, ap: ap_max });
-    logEntry(
-      "You rest at the nearby inn and wake up feeling refreshed!",
-      "pink"
-    );
-    Town();
+  gameButton("Inventory", () => showInventory(Town));
+  gameButton("Rest (50g)", () => {
+    const { hp_max, mp_max, ap_max, gold } = getPlayer();
+    if (gold >= 50) {
+      updatePlayer({ hp: hp_max, mp: mp_max, ap: ap_max, gold: gold - 50 });
+      logEntry(
+        "You rest at the nearby inn and wake up feeling refreshed!",
+        "pink"
+      );
+      Town();
+    } else {
+      logEntry("Not enough gold...");
+    }
   });
 }
 

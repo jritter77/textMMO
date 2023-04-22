@@ -9,10 +9,15 @@ export function attack(enemy) {
 }
 
 export function fireblast(enemy) {
-  clearButtons();
-  logEntry("You attack " + enemy.name + " for 3 fire damage!", "orange");
-  enemy.hp -= 3;
-  setTimeout(() => enemyTurn(enemy), 1000);
+  if (getPlayer().mp >= 5) {
+    clearButtons();
+    logEntry("You attack " + enemy.name + " for 3 fire damage!", "orange");
+    enemy.hp -= 3;
+    updatePlayer({ mp: getPlayer().mp - 5 < 0 ? 0 : getPlayer().mp - 5 });
+    setTimeout(() => enemyTurn(enemy), 1000);
+  } else {
+    logEntry("Not enough MP...");
+  }
 }
 
 export function mend(enemy) {

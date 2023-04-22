@@ -36,6 +36,7 @@ export function playerTurn(enemy) {
   gameButton("Attack", () => attack(enemy));
   gameButton("Fireblast", () => fireblast(enemy));
   gameButton("Mend", () => mend(enemy));
+  gameButton("Use Item", () => {});
 }
 
 export function enemyTurn(enemy) {

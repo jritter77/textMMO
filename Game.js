@@ -1,3 +1,4 @@
+import { Items, hpPotion, itemOptions } from "./Items";
 import { Town } from "./Rooms";
 
 const gameWindow = document.getElementById("gameWindow");
@@ -9,22 +10,33 @@ const hp = document.getElementById("hp");
 const mp = document.getElementById("mp");
 const ap = document.getElementById("ap");
 
+const gold = document.getElementById("gold");
+
 export function newPlayer(name) {
   return {
     name: name,
-    hp: 100,
-    hp_max: 100,
-    mp: 100,
-    mp_max: 100,
-    ap: 100,
-    ap_max: 100,
+    hp: 20,
+    hp_max: 20,
+    mp: 20,
+    mp_max: 20,
+    ap: 20,
+    ap_max: 20,
+    gold: 500,
     power: 1,
     wisdom: 1,
     cunning: 1,
+    head: null,
+    body: null,
+    weapon: null,
+    offhand: null,
+    acc_1: null,
+    acc_2: null,
+    inventory: ["hpPotion", "hpPotion"],
   };
 }
 
 export function setPlayer(player) {
+  console.log(JSON.stringify(player));
   localStorage.setItem("player", JSON.stringify(player));
 }
 
@@ -43,6 +55,18 @@ export function displayStatus() {
   hp.innerText = "HP: " + player.hp;
   mp.innerText = "MP: " + player.mp;
   ap.innerText = "AP: " + player.ap;
+  gold.innerText = "Gold: " + player.gold;
+}
+
+export function showInventory(room, enemy = null) {
+  clearButtons();
+  logEntry("You open your inventory...");
+  const { inventory } = getPlayer();
+  gameButton("Close Inventory", room);
+  for (let item of inventory) {
+    console.log(Items[item]);
+    gameButton(Items[item].title, () => itemOptions(Items[item], room, enemy));
+  }
 }
 
 export function logEntry(msg, color = "white") {
@@ -83,7 +107,7 @@ export function Intro() {
   if (localStorage.getItem("player") === null) {
     logEntry("Please enter a name for your character:");
 
-    const playerName = gameInput("Enter a name for your character");
+    const playerName = gameInput("Name");
     gameButton("Confirm", (e) => {
       if (playerName.value !== "") {
         setPlayer(newPlayer(playerName.value));

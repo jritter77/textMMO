@@ -7,6 +7,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: sans-serif;
 }
 
 #gameWindow {
@@ -33,6 +34,8 @@ body {
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
+    padding: 8px;
+    overflow-y: scroll;
 }
 
 #statGroup {
@@ -61,15 +64,16 @@ body {
     height: 30%;
     width: 60%;
     font-size: 24px; 
+    text-align: center;
 }
 
 .gameButton {
-    height: 40%;
+    height: 60%;
     background-color: blue;
     color: white;
     font-size: 20px;
-    flex: 1;
-    margin: 16px;
+    width: 30%;
+    margin-bottom: 8px;
 }
 
 .gameButton:hover {
