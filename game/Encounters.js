@@ -1,5 +1,4 @@
 import { attack, fireblast, mend } from "./Abilities";
-import { Goblin } from "./Enemies";
 import {
   clearButtons,
   displayStatus,
@@ -10,10 +9,12 @@ import {
 } from "./Game";
 import { Forest, Town } from "./Rooms";
 
-export function Encounter() {
+export function Encounter(encounterList) {
   displayStatus();
 
-  const enemy = Goblin();
+  const r = Math.floor(Math.random() * encounterList.length);
+
+  const enemy = encounterList[r]();
 
   logEntry("You encounter a " + enemy.name + "!", "yellow");
 
@@ -22,8 +23,10 @@ export function Encounter() {
 
 export function playerTurn(enemy) {
   if (getPlayer().hp < 1) {
-    logEntry("You have feinted...");
+    logEntry("You have collapsed...");
     logEntry("You have been revived and restored by the medics in town.");
+    const { hp_max, mp_max, ap_max } = getPlayer();
+    updatePlayer({ hp: hp_max, mp: mp_max, ap: ap_max });
     Town();
     return;
   }
@@ -50,7 +53,8 @@ export function enemyTurn(enemy) {
   clearButtons();
   displayStatus();
 
-  logEntry("Enemy attacks for 1 normal damage!");
-  updatePlayer({ hp: getPlayer().hp - 1 });
+  const r = Math.floor(Math.random() * enemy.abilities.length);
+  enemy.abilities[r](enemy);
+
   setTimeout(() => playerTurn(enemy), 1000);
 }

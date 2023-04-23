@@ -1,6 +1,5 @@
 import { Items, hpPotion, itemOptions } from "./Items";
 import { Town } from "./Rooms";
-
 const gameWindow = document.getElementById("gameWindow");
 const log = document.getElementById("log");
 const buttonGroup = document.getElementById("buttonGroup");
@@ -36,7 +35,6 @@ export function newPlayer(name) {
 }
 
 export function setPlayer(player) {
-  console.log(JSON.stringify(player));
   localStorage.setItem("player", JSON.stringify(player));
 }
 
@@ -64,9 +62,21 @@ export function showInventory(room, enemy = null) {
   const { inventory } = getPlayer();
   gameButton("Close Inventory", room);
   for (let item of inventory) {
-    console.log(Items[item]);
     gameButton(Items[item].title, () => itemOptions(Items[item], room, enemy));
   }
+}
+
+export function addToInventory(item) {
+  const { inventory } = getPlayer();
+  updatePlayer({ inventory: [...inventory, item] });
+}
+
+export function removeFromInventory(item) {
+  const { inventory } = getPlayer();
+  updatePlayer({
+    inventory:
+      inventory.length > 1 ? inventory.splice(inventory.indexOf(item), 1) : [],
+  });
 }
 
 export function logEntry(msg, color = "white") {

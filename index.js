@@ -1,3 +1,3 @@
-import { Intro } from "./Game";
+import { Intro } from "./game/Game";
 
 Intro();
